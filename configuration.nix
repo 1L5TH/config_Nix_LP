@@ -137,6 +137,7 @@ in
      appimage-run
      steam
      sway
+     swayosd
      waybar
      mpv
      openjdk
