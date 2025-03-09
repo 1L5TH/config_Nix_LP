@@ -10,7 +10,7 @@
       ./hardware-configuration.nix
       ./packages.nix
       ./graphics.nix
-      ./hardware-configuration.nix
+      ./home-config.nix
     ];
 
   # Bootloader.
@@ -110,7 +110,8 @@
       xdg-desktop-portal-gnome
     ];
   };
-
+  
+  programs.dconf.enable = true;
   services.gvfs.enable = true;
   services.flatpak.enable = true;
   security.rtkit.enable = true;

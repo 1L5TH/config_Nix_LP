@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+  PS1_CMD1 = "$(git branch --show-current 2>/dev/null)";
 in
 {
   imports = [
@@ -16,7 +17,6 @@ in
     programs.bash.enable = true;
     programs.foot.enable = true;
     programs.mpv.enable = true;
-    programs.tofi.enable = true;
     gtk.enable = true;
     services.swayosd.enable = true;
 
@@ -29,7 +29,7 @@ in
 
     programs.foot.settings = {
       main = {
-        font = "liberation mono:size=14";
+        font = "liberation mono:size=12";
         dpi-aware = false;
       };
 
@@ -58,6 +58,21 @@ in
         bright7="ffffff";   # bright white
       };
     };
+
+    programs.bash = {
+    #enable = true;
+    initExtra = ''
+        # Salir si no es una sesión interactiva
+        [[ $- != *i* ]] && return
+
+        # Alias para ejecutar nvim como root
+        alias snvim='sudo -E nvim'
+
+        # Prompt con el nombre de la rama de Git
+        PS1='[\[\e[96m\]\u\[\e[0m\]@\[\e[95m\]\h\[\e[0m\] \[\e[92m\]\W\[\e[0m\]] <\[\e[96m\]${PS1_CMD1}\[\e[0m\]> \\$ '
+      '';
+    };
+
     dconf.settings = {
       "org/gnome/desktop/interface" = {
         cursor-theme = "macOS";
@@ -65,12 +80,12 @@ in
     };
 
     gtk.gtk3.bookmarks = [
-      "file:///home/mig/Desktop"
-      "file:///home/mig/Documents"
-      "file:///home/mig/Videos"
-      "file:///home/mig/Music"
-      "file:///home/mig/Images"
-      "file:///home/mig/Downloads"
+      "file:///home/ale/Desktop"
+      "file:///home/ale/Documents"
+      "file:///home/ale/Videos"
+      "file:///home/ale/Music"
+      "file:///home/ale/Images"
+      "file:///home/ale/Downloads"
     ];
     gtk.gtk3.extraConfig = {
       gtk-icon-theme-name = "Adwaita";
@@ -113,4 +128,6 @@ in
     # };
     xdg.configFile."Thunar/uca.xml".source = ./configs/thunar.uca.xml;
   };
+  home-manager.backupFileExtension = "backup";
+
 }
