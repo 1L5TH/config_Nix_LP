@@ -2,34 +2,19 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, libs, ... }:
+{ config, pkgs, lib, ... }:
 
-let
-  tooglewallpaper_script = pkgs.writeShellScriptBin "toogleWallpaper_sh" "
-    bash /usr/local/bin/toogleWallpaper.sh 
-  ";
-  wallpaper_script = pkgs.writeShellScriptBin "wallpaper_sh" "
-    bash /usr/local/bin/wallpaper.sh 
-  ";
-  startn_script = pkgs.writeShellScriptBin "startn" "
-    bash /usr/local/bin/startn.sh  
-  ";
-  quit_niri_script = pkgs.writeShellScriptBin "quit_niri_sh" "
-    bash /usr/local/bin/quit_niri.sh   
-  ";
-  ciscoPacketTracer = pkgs.ciscoPacketTracer8.overrideAttrs (oldAttrs: {
-    src = /home/ale/Downloads/Packet_Tracer822_amd64_signed.deb;
-  });
-in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./packages.nix
+      ./graphics.nix
+      ./hardware-configuration.nix
     ];
 
   # Bootloader.
-  boot.kernelParams = [ "i915.force_probe=a7a0" ];
-  boot.kernelModules = [ "nvidia_uvm" ];
+  boot.loader.timeout = null;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -38,32 +23,8 @@ in
     enable = true;
   };
 
-  hardware.bluetooth.enable = true;
-  
-  hardware.graphics.enable32Bit = true;
-  hardware.pulseaudio.support32Bit = true;
-
-  # Load nvidia driver fpr Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = true;
-    powerManagement.finegrained = true;
-    open = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
-  };
-
-  hardware.nvidia.prime = {
-    offload = {
-      enable = true;
-      enableOffloadCmd = true;
-    };
-    # Make sure to use the correct Bus ID values for your system!
-    intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:01:0:0";
-  };
+  hardware.bluetooth.enable = true; # enables support for bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot 
   
   networking.hostName = "1L5-LP-NIX"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -101,67 +62,7 @@ in
   nixpkgs.config.allowUnfree = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-     (pkgs.python3.withPackages (python-pkgs: [
-      python-pkgs.psutil
-     ]))
-     git
-     niri
-     neovim
-     firefox
-     xfce.thunar
-     xfce.thunar-volman
-     pipewire
-     pavucontrol
-     swaybg
-     xwayland-satellite
-     htop
-     python3
-     foot
-     
-     clang
-     rustc
-     rust-analyzer
-     cargo
-     wl-clipboard
-     
-     gvfs
-     xorg.xeyes
-     qalculate-gtk
-     libreoffice
-     localsend
-     mysql-workbench
-     appimage-run
-     steam
-     sway
-     swayosd
-     waybar
-     mpv
-     openjdk
-     mpvpaper
-     wofi
-     gnome-themes-extra
-     
-     docker
-     docker-compose
-     
-     nodejs
-     unzip
-     clang-tools
-      
-     ciscoPacketTracer
-     
-     quit_niri_script
-     startn_script
-     wallpaper_script
-     tooglewallpaper_script
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];
-
+ 
   fonts.packages = with pkgs; [
     fira-code
     fira-code-symbols
@@ -169,7 +70,7 @@ in
     liberation_ttf
     dejavu_fonts
     font-awesome
-    nerdfonts
+    nerd-fonts.jetbrains-mono
   ];
 
   environment.etc."polkit-1/rules.d/10-nixos.rules".text = ''
@@ -187,7 +88,7 @@ in
   services.avahi = {
     enable = true;
     nssmdns4 = true;
-    openFirewall = true;
+    #openFirewall = true;
   };
   
   # Some programs need SUID wrappers, can be configured further or are
@@ -218,7 +119,6 @@ in
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    #bluetooth.enable = true;  # Habilita soporte de audio Bluetooth en PipeWire
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
   };
@@ -238,15 +138,16 @@ in
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [
-    58396
-    631
-    53317
-  ];
-  networking.firewall.allowedUDPPorts = [
-    631
-    53317
-  ];
+  #networking.firewall.allowedTCPPorts = [
+  #  58396
+  #  631
+  #  53317
+  #];
+  #networking.firewall.allowedUDPPorts = [
+  #  631
+  #  53317
+  #];
+
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
