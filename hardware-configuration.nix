@@ -12,6 +12,9 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.kernelParams = [
+    "video.use_native_backlight=1" 
+  ];
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/df6ee2a8-6410-4737-822b-38aad56dcd5c";
