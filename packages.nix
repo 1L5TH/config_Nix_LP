@@ -50,12 +50,15 @@ in
       python-pkgs.psutil
     ]))
     git
+    lazygit
+    tinymist
     niri
     neovim
-    zed-editor
+    #zed-editor
+    android-studio
     firefox
-    xfce.thunar
-    xfce.thunar-volman
+    #xfce.thunar
+    #xfce.thunar-volman
     pipewire
     pavucontrol
     swaybg
@@ -64,7 +67,7 @@ in
     python3
     #foot
     
-    clang
+    #clang
     rustc
     rust-analyzer
     cargo
@@ -92,9 +95,10 @@ in
     imagemagick
     grim
     swaylock
+    nomacs
    
-    docker
-    docker-compose
+    #docker
+    #docker-compose
    
     nodejs
     unzip
@@ -104,10 +108,13 @@ in
     hunspellDicts.en_US
     prismlauncher
     linux-wifi-hotspot
-    peaclock
+    
     # lsp servers
-    nil
-    tinymist
+    #nil
+    #tinymist
+
+    #formaters
+    #typstyle
     
     wl-mirror
     rsync

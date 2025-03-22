@@ -17,6 +17,7 @@ in
     programs.bash.enable = true;
     programs.foot.enable = true;
     programs.mpv.enable = true;
+    programs.zed-editor.enable = true;
     gtk.enable = true;
     services.swayosd.enable = true;
 
@@ -73,8 +74,26 @@ in
       '';
     };
 
+    programs.zed-editor.extensions = [
+      "log"
+      "nix"
+      "basher"
+      "typst"
+    ];
+    programs.zed-editor.userKeymaps = builtins.fromJSON (builtins.readFile ./configs/zed/keymap.json);
+    programs.zed-editor.userSettings = builtins.fromJSON (builtins.readFile ./configs/zed/settings.json);
+    xdg.configFile."zed/tasks.json".source = ./configs/zed/tasks.json;
+    programs.zed-editor.extraPackages = with pkgs; [
+      nil
+      nixfmt-rfc-style
+      tinymist
+      typstyle
+      clang-tools
+    ];
+
     dconf.settings = {
       "org/gnome/desktop/interface" = {
+        gtk-theme = "Adwaita-dark";
         cursor-theme = "macOS";
       };
     };
@@ -84,7 +103,7 @@ in
       "file:///home/ale/Documents"
       "file:///home/ale/Videos"
       "file:///home/ale/Music"
-      "file:///home/ale/Images"
+      "file:///home/ale/Pictures"
       "file:///home/ale/Downloads"
     ];
     gtk.gtk3.extraConfig = {
@@ -98,6 +117,9 @@ in
       gtk-theme-name = "Adwaita-dark";
       gtk-application-prefer-dark-theme = 1;
       gtk-cursor-theme-name = "macOS";
+    };
+    home.sessionVariables = {
+      GTK_THEME = "Adwaita-dark";
     };
     home.pointerCursor = {
       gtk.enable = true;
