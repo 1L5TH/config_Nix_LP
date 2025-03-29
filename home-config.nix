@@ -72,6 +72,9 @@ in
     programs.bash = {
       #enable = true;
       initExtra = ''
+        export QT_QPA_PLATFORMTHEME="qt5ct";
+        export QT6_PLATFORMTHEME="qt6ct";
+
         [[ $- != *i* ]] && return
         alias snvim='sudo -E nvim'
         PS1='[\[\e[96m\]\u\[\e[0m\]@\[\e[95m\]\h\[\e[0m\] \[\e[92m\]\W\[\e[0m\]] <\[\e[96m\]${PS1_CMD1}\[\e[0m\]> \\$ '
@@ -174,6 +177,29 @@ in
     xdg.configFile."wofi/menu-theme.conf".source = ./configs/wofi/menu-theme.conf;
     xdg.configFile."wofi/menu-theme.css".source = ./configs/wofi/menu-theme.css;
     xdg.configFile."wofi/style.css".source = ./configs/wofi/style.css;
+
+    xdg.configFile."qt5ct/colors/darker.conf".source = ./configs/qt/darker.conf;
+    xdg.configFile."qt6ct/colors/darker.conf".source = ./configs/qt/darker.conf;
+    xdg.configFile."qt5ct/qt5ct.conf".text = ''
+      [Appearance]
+      color_scheme_path=/home/ale/.config/qt5ct/colors/darker.conf
+      custom_palette=true
+      standard_dialogs=default
+      style=Fusion
+      [Fonts]
+      fixed="Sans Serif,12,-1,5,50,0,0,0,0,0"
+      general="Sans Serif,12,-1,5,50,0,0,0,0,0"
+    '';
+    xdg.configFile."qt6ct/qt6ct.conf".text = ''
+      [Appearance]
+      color_scheme_path=/home/ale/.config/qt6ct/colors/darker.conf
+      custom_palette=true
+      standard_dialogs=default
+      style=Fusion
+      [Fonts]
+      fixed="Sans Serif,12,-1,5,50,0,0,0,0,0"
+      general="Sans Serif,12,-1,5,50,0,0,0,0,0"
+    '';
   };
   home-manager.backupFileExtension = "backup";
 

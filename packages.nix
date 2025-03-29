@@ -100,6 +100,10 @@ in
     grim
     swaylock
     nomacs
+    suyu
+
+    libsForQt5.qt5ct
+    qt6ct
 
     #docker
     #docker-compose
