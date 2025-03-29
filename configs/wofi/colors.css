@@ -1,0 +1,13 @@
+@define-color background       transparent;
+@define-color bg-alpha         rgba(26, 26, 46, .85); 
+@define-color surface          #2e2e46;
+@define-color selection        #0e1626;
+@define-color foreground       #e0e5f0;
+@define-color tooltip          #d0d7e0;
+@define-color secondary        #b0b7c8;
+@define-color disabled         #5c6070;
+@define-color accent           #4aa3ff;
+@define-color accent-rgba      rgba(74, 163, 255, .8);
+@define-color accent-secondary #3a8ed1;
+@define-color fg-on-accent     #0a0a14;
+@define-color danger           #ff5370;

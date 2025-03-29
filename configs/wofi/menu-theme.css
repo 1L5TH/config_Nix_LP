@@ -1,0 +1,28 @@
+@import url('.config/wofi/colors.css');
+
+window {
+    background-color: transparent;
+}
+
+#outer-box {
+    background-color: @background;
+    padding: 0 12px 12px 12px;
+    border-radius: 6px;
+    border: 2px solid @surface;
+}
+
+#input {
+    font-size: 0;
+    opacity: 0;
+}
+
+#entry {
+    border-radius: 0;
+    padding-left: 12px;
+}
+
+#entry:selected {
+    background-color: @background;
+    padding-left: 8px;
+    border-left: 4px solid @accent;
+}

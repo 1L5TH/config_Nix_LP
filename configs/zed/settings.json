@@ -17,9 +17,9 @@
   "buffer_font_family": "Fira Code",
   "soft_wrap": "editor_width",
   "theme": {
-    "mode": "system",
     "light": "One Light",
-    "dark": "One Dark"
+    "dark": "One Dark",
+    "mode": "dark"
   },
   "experimental.theme_overrides": {
     "background.appearance": "blurred",

@@ -1,0 +1,21 @@
+width          = 640
+height         = 320
+y              = 32
+location       = top
+layer          = overlay
+halign         = fill
+content_halign = fill
+orientation    = vertical
+allow_markup   = true
+
+show        = drun
+prompt      = Hi 1L5, how are you doing today?
+no_actions  = true
+filter_rate = 100
+insensitive = true
+
+allow_images = true
+image_size   = 24
+
+term     = foot
+gtk_dark = true

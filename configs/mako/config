@@ -1,0 +1,12 @@
+font=Sans 12
+
+# background=#FF2E3440
+# foreground=#FFD8DEE9
+# border=#FF4C566A
+
+
+anchor=center
+
+markup=1
+max-visible=5
+default-timeout=1500

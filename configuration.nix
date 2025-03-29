@@ -1,17 +1,18 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./packages.nix
-      ./graphics.nix
-      ./home-config.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./packages.nix
+    ./graphics.nix
+    ./home-config.nix
+  ];
 
   # Bootloader.
   boot.loader.timeout = null;
@@ -24,8 +25,8 @@
   };
 
   hardware.bluetooth.enable = true; # enables support for bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot 
-  
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
   networking.hostName = "1L5-LP-NIX"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -54,15 +55,22 @@
   users.users.ale = {
     isNormalUser = true;
     description = "ale";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
-    packages = with pkgs; [];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ];
+    packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
- 
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   fonts.packages = with pkgs; [
     fira-code
     fira-code-symbols
@@ -82,7 +90,7 @@
     });
   '';
 
-  security.pam.services.swaylock = {};
+  security.pam.services.swaylock = { };
   services.printing.enable = true;
   #services.printing.drivers = [ pkgs.epson-escpr2 ];
   services.avahi = {
@@ -90,7 +98,7 @@
     nssmdns4 = true;
     #openFirewall = true;
   };
-  
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -110,7 +118,7 @@
       xdg-desktop-portal-gnome
     ];
   };
-  
+
   programs.dconf.enable = true;
   services.gvfs.enable = true;
   services.flatpak.enable = true;

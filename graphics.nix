@@ -1,10 +1,15 @@
-{ config, pkgs, lib, ... }:
 {
-  hardware.graphics= {
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
+  hardware.graphics = {
     enable = true;
     #driSupport = true;
     extraPackages = with pkgs; [
-      vpl-gpu-rt          # for newer GPUs on NixOS >24.05 or unstable
+      vpl-gpu-rt # for newer GPUs on NixOS >24.05 or unstable
       intel-compute-runtime
       intel-media-driver
       # onevpl-intel-gpu  # for newer GPUs on NixOS <= 24.05
@@ -14,9 +19,9 @@
 
   boot.kernelParams = [ "i915.force_probe=a7a0" ];
   boot.kernelModules = [ "nvidia_uvm" ];
- 
+
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -34,10 +39,9 @@
       enable = true;
       enableOffloadCmd = true;
     };
-    # Make sure to use the correct Bus ID values for your system!
+
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:01:0:0";
   };
 
 }
-
