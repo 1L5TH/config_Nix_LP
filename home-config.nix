@@ -108,7 +108,6 @@ in
     };
 
     gtk.gtk3.bookmarks = [
-      "file:///home/ale/Desktop"
       "file:///home/ale/Documents"
       "file:///home/ale/Videos"
       "file:///home/ale/Music"
