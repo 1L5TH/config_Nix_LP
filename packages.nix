@@ -132,6 +132,7 @@ in
     apple-cursor
     nautilus # Needed for gtk4 FileChooserNative
     yazi
+    jaq
 
     firefox-sync
     quit_niri_script

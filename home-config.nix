@@ -22,6 +22,7 @@ in
     # Here goes the rest of your home-manager config, e.g. home.packages = [ pkgs.foo ];
 
     # Programs
+    programs.eww.enable = true;
     programs.bash.enable = true;
     programs.foot.enable = true;
     programs.mpv.enable = true;
@@ -33,7 +34,7 @@ in
     # Configs
     programs.git = {
       enable = true;
-      userName = "aleneitor";
+      userName = "1L5TH";
       userEmail = "aleth2k@gmail.com";
     };
 
@@ -98,6 +99,8 @@ in
       tinymist
       typstyle
       clang-tools
+      python313Packages.python-lsp-server
+      python313Packages.pylint
     ];
 
     dconf.settings = {
@@ -165,6 +168,25 @@ in
 
     xdg.configFile."waybar/config".source = ./configs/waybar/config;
     xdg.configFile."waybar/style.css".source = ./configs/waybar/style.css;
+
+    xdg.configFile."eww/eww.scss".source = ./configs/eww/eww.scss;
+    xdg.configFile."eww/eww.yuck".source = ./configs/eww/eww.yuck;
+    xdg.configFile."eww/modules/battery.yuck".source = ./configs/eww/modules/battery.yuck;
+    xdg.configFile."eww/modules/clock.yuck".source = ./configs/eww/modules/clock.yuck;
+    xdg.configFile."eww/modules/cpu.yuck".source = ./configs/eww/modules/cpu.yuck;
+    xdg.configFile."eww/modules/focused-window.yuck".source = ./configs/eww/modules/focused-window.yuck;
+    xdg.configFile."eww/modules/network.yuck".source = ./configs/eww/modules/network.yuck;
+    xdg.configFile."eww/modules/niri-workspaces.yuck".source =
+      ./configs/eww/modules/niri-workspaces.yuck;
+    xdg.configFile."eww/modules/ram.yuck".source = ./configs/eww/modules/ram.yuck;
+    xdg.configFile."eww/modules/temp.yuck".source = ./configs/eww/modules/temp.yuck;
+    xdg.configFile."eww/modules/calendar.yuck".source = ./configs/eww/modules/calendar.yuck;
+    xdg.configFile."eww/scripts/niri-focused-window.sh".source =
+      ./configs/eww/scripts/niri-focused-window.sh;
+    xdg.configFile."eww/scripts/niri-workspaces.sh".source = ./configs/eww/scripts/niri-workspaces.sh;
+    xdg.configFile."eww/scripts/nmcli-monitor.sh".source = ./configs/eww/scripts/nmcli-monitor.sh;
+    xdg.configFile."eww/scripts/calendar.sh".source = ./configs/eww/scripts/calendar.sh;
+    xdg.configFile."eww/scripts/multimonitor.sh".source = ./configs/eww/scripts/multimonitor.sh;
 
     xdg.configFile."wofi/scripts/menu-left".source = ./configs/wofi/scripts/menu-left;
     xdg.configFile."wofi/scripts/menu-right".source = ./configs/wofi/scripts/menu-right;

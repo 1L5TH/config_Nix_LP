@@ -48,7 +48,9 @@ layout {
     center-focused-column "never"
 }
 
-spawn-at-startup "waybar"
+//spawn-at-startup "waybar"
+spawn-at-startup "eww" "daemon"
+spawn-at-startup "sh" "-c" "$HOME/.config/eww/scripts/multimonitor.sh"
 spawn-at-startup "wallpaper_sh"
 //spawn-at-startup "swayosd-server"
 spawn-at-startup "xwayland-satellite"
