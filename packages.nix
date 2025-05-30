@@ -64,8 +64,8 @@ in
     #zed-editor
     android-studio
     firefox
-    #xfce.thunar
-    #xfce.thunar-volman
+    xfce.thunar
+    xfce.thunar-volman
     pipewire
     pavucontrol
     swaybg
@@ -120,7 +120,7 @@ in
     prismlauncher
     linux-wifi-hotspot
 
-    # lsp servers
+    #lsp servers
     #nil
     #tinymist
 

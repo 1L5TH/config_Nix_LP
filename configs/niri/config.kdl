@@ -69,7 +69,7 @@ cursor {
 
 prefer-no-csd
 
-screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+screenshot-path "~/Pictures/Screenshots/Screenshot_from_%d-%m-%Y_%H-%M-%S.png"
 
 hotkey-overlay {
     skip-at-startup
