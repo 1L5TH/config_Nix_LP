@@ -5,6 +5,9 @@
   ...
 }:
 let
+  suyu_script = pkgs.writeShellScriptBin "suyu" "
+    bash appimage-run ./Downloads/Suyu-Linux_x86_64.AppImage
+  ";
   tooglewallpaper_script = pkgs.writeShellScriptBin "toogleWallpaper_sh" "
     bash /usr/local/bin/toogleWallpaper.sh
   ";
@@ -100,7 +103,7 @@ in
     grim
     swaylock
     nomacs
-    suyu
+    suyu_script
 
     libsForQt5.qt5ct
     qt6ct

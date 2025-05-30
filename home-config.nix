@@ -75,6 +75,7 @@ in
       initExtra = ''
         export QT_QPA_PLATFORMTHEME="qt5ct";
         export QT6_PLATFORMTHEME="qt6ct";
+        export NIXPKGS_ALLOW_UNFREE=1;
 
         [[ $- != *i* ]] && return
         alias snvim='sudo -E nvim'

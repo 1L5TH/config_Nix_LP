@@ -15,10 +15,20 @@
   ];
 
   # Bootloader.
-  boot.loader.timeout = null;
+  #boot.loader.timeout = 0;
+  #boot.loader.systemd-boot.editor = true;
+  #boot.loader.systemd-boot.configurationLimit = 0;
+  #boot.loader.systemd-boot.enable = true;
 
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = false;
+
   boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.loader.grub.enable = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.devices = [ "nodev" ]; # Importante para EFI
+  boot.loader.grub.useOSProber = true; # Para que detecte Windows
+  boot.loader.timeout = null;
 
   hardware.graphics = {
     enable = true;
