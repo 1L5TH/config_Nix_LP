@@ -116,6 +116,7 @@ in
     nomacs
     suyu_script
 
+    #libsForQt5.qtstyleplugin-kvantum
     libsForQt5.qt5ct
     qt6ct
 

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
   PS1_CMD1 = "$(git branch --show-current 2>/dev/null)";
@@ -28,6 +28,21 @@ in
       userName = "1L5TH";
       userEmail = "aleth2k@gmail.com";
     };
+
+    home.packages = with pkgs; [
+      (catppuccin-kvantum.override {
+        accent = "mauve";
+        variant = "mocha";
+      })
+    ];
+    qt.enable = true;
+    qt.platformTheme.name = "qtct";
+    qt.style.name = "kvantum";
+    xdg.configFile."Kvantum/kvantum.kvconfig".source =
+      (pkgs.formats.ini { }).generate "kvantum.kvconfig"
+        {
+          General.theme = "catppuccin-mocha-mauve";
+        };
 
     programs.foot.settings = {
       main = {
