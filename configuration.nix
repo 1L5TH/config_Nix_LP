@@ -15,21 +15,21 @@
   ];
 
   # Bootloader.
-  #boot.loader.timeout = 0;
-  #boot.loader.systemd-boot.editor = true;
-  #boot.loader.systemd-boot.configurationLimit = 0;
-  #boot.loader.systemd-boot.enable = true;
+  boot.loader.timeout = 0;
+  boot.loader.systemd-boot.editor = true;
+  boot.loader.systemd-boot.configurationLimit = 0;
+  boot.loader.systemd-boot.enable = true;
 
-  boot.loader.systemd-boot.enable = false;
+  #boot.loader.systemd-boot.enable = false;
 
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.devices = [ "nodev" ]; # Importante para EFI
-  boot.loader.grub.useOSProber = true; # Para que detecte Windows
-  boot.loader.timeout = null;
-   
+  #boot.loader.grub.enable = true;
+  #boot.loader.grub.efiSupport = true;
+  #boot.loader.grub.devices = [ "nodev" ]; # Importante para EFI
+  #boot.loader.grub.useOSProber = true; # Para que detecte Windows
+  #boot.loader.timeout = null;
+
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     "nowatchdog"
@@ -147,7 +147,7 @@
       "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
       "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
     };
-  };  
+  };
   programs.dconf.enable = true;
   services.gvfs.enable = true;
   services.flatpak.enable = true;
