@@ -98,6 +98,11 @@ animations {
     }
 }
 
+window-rule {
+    match app-id=r#"wlroots"#
+    open-fullscreen true
+    block-out-from "screen-capture"
+}
 
 window-rule {
     match app-id=r#"^org\.wezfurlong\.wezterm$"#

@@ -52,6 +52,17 @@ in
     #aagl.module
   ];
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      ouch = prev.ouch.override { enableUnfree = true; };
+      prismlauncher = prev.prismlauncher.override {
+        jdks = with pkgs; [
+          graalvm-oracle
+        ];
+      };
+    })
+  ];
+
   environment.systemPackages = with pkgs; [
     (pkgs.python3.withPackages (python-pkgs: [
       python-pkgs.psutil
@@ -64,8 +75,8 @@ in
     #zed-editor
     android-studio
     firefox
-    xfce.thunar
-    xfce.thunar-volman
+    #xfce.thunar
+    #xfce.thunar-volman
     pipewire
     pavucontrol
     swaybg
@@ -80,7 +91,7 @@ in
     cargo
     wl-clipboard
 
-    gvfs
+    #gvfs
     xorg.xeyes
     qalculate-gtk
     libreoffice
@@ -91,7 +102,7 @@ in
     swayosd
     waybar
     #mpv
-    openjdk
+    jdk
     mpvpaper
     wofi
     gnome-themes-extra
@@ -133,9 +144,14 @@ in
     gnupg
     pinentry-tty
     apple-cursor
-    nautilus # Needed for gtk4 FileChooserNative
+    #nautilus # Needed for gtk4 FileChooserNative
     yazi
     jaq
+
+    kdePackages.dolphin
+    kdePackages.qtsvg
+    kdePackages.kio-fuse # to mount remote filesystems via FUSE
+    kdePackages.kio-extras # extra protocols support (sftp, fish and more)
 
     firefox-sync
     quit_niri_script

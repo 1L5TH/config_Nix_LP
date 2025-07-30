@@ -29,6 +29,13 @@
   boot.loader.grub.devices = [ "nodev" ]; # Importante para EFI
   boot.loader.grub.useOSProber = true; # Para que detecte Windows
   boot.loader.timeout = null;
+   
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [
+    "nowatchdog"
+    "preempt=full"
+  ];
+  boot.kernelModules = [ "ntsync" ];
 
   hardware.graphics = {
     enable = true;
@@ -59,7 +66,7 @@
     variant = "";
   };
 
-  virtualisation.docker.enable = true;
+  #virtualisation.docker.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ale = {
@@ -68,9 +75,9 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "docker"
+      #"docker"
     ];
-    packages = with pkgs; [ ];
+    #packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
@@ -121,14 +128,26 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-  xdg.portal.config.common.default = "*";
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
+      kdePackages.xdg-desktop-portal-kde
       xdg-desktop-portal-gnome
     ];
   };
-
+  # Most of this is copied from niri's config, except the KDE FileChooser
+  xdg.portal.config = {
+    niri = {
+      default = [
+        "gnome"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.Access" = [ "gtk" ];
+      "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
+      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+    };
+  };  
   programs.dconf.enable = true;
   services.gvfs.enable = true;
   services.flatpak.enable = true;
