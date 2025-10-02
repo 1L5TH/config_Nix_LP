@@ -75,7 +75,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      #"docker"
+      "docker"
     ];
     #packages = with pkgs; [ ];
   };
