@@ -120,8 +120,8 @@ in
     libsForQt5.qt5ct
     qt6ct
 
-    #docker
-    #docker-compose
+    docker
+    docker-compose
 
     nodejs
     unzip
