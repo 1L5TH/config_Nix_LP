@@ -11,7 +11,7 @@
     ./hardware-configuration.nix
     ./packages.nix
     ./graphics.nix
-    ./home-config.nix
+    #./home-config.nix
   ];
 
   # Bootloader.
