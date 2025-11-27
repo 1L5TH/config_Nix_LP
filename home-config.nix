@@ -24,7 +24,7 @@ in
   services.swayosd.enable = true;
 
   # Configs
-  programs.git = {
+  programs.git.settings = {
     enable = true;
     userName = "1L5TH";
     userEmail = "aleth2k@gmail.com";

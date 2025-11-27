@@ -57,7 +57,7 @@ in
       ouch = prev.ouch.override { enableUnfree = true; };
       prismlauncher = prev.prismlauncher.override {
         jdks = with pkgs; [
-          graalvm-oracle
+          graalvmPackages.graalvm-oracle
         ];
       };
     })
@@ -118,7 +118,7 @@ in
 
     #libsForQt5.qtstyleplugin-kvantum
     libsForQt5.qt5ct
-    qt6ct
+    qt6Packages.qt6ct
 
     docker
     docker-compose
