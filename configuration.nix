@@ -66,7 +66,12 @@
     variant = "";
   };
 
-  virtualisation.libvirtd.enable = true;
+  
+virtualisation.libvirtd = {
+  enable = true;
+  onBoot = true;   # 👈 CLAVE
+};
+
 
   virtualisation.docker.enable = true;
 
