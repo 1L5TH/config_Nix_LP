@@ -85,6 +85,8 @@ in
     python3
     #foot
 
+    virt-manager
+
     #clang
     rustc
     rust-analyzer
