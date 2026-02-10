@@ -67,15 +67,17 @@
   };
 
   
-virtualisation.libvirtd = {
+/*virtualisation.libvirtd = {
   enable = true;
-  onBoot = true;   # 👈 CLAVE
-};
+  onBoot = "start";
+  qemu.swtpm.enable = true;
+};*/
+
 
 
   virtualisation.docker.enable = true;
 
-  virtualisation.spiceUSBRedirection.enable = true;
+  #virtualisation.spiceUSBRedirection.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ale = {
@@ -85,8 +87,8 @@ virtualisation.libvirtd = {
       "networkmanager"
       "wheel"
       "docker"
-      "kvm"
-      "libvirtd"
+   #   "kvm"
+    #  "libvirtd"
     ];
     #packages = with pkgs; [ ];
   };

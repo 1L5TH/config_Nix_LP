@@ -83,9 +83,10 @@ in
     xwayland-satellite
     htop
     python3
+    vscode
     #foot
 
-    virt-manager
+    #virt-manager
 
     #clang
     rustc
