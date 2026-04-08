@@ -66,15 +66,6 @@
     variant = "";
   };
 
-  
-/*virtualisation.libvirtd = {
-  enable = true;
-  onBoot = "start";
-  qemu.swtpm.enable = true;
-};*/
-
-
-
   virtualisation.docker.enable = true;
 
   #virtualisation.spiceUSBRedirection.enable = true;
@@ -87,14 +78,13 @@
       "networkmanager"
       "wheel"
       "docker"
-   #   "kvm"
-    #  "libvirtd"
     ];
     #packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  programs.arduino.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"

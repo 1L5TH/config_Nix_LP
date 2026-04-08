@@ -73,7 +73,7 @@ in
     niri
     neovim
     #zed-editor
-    android-studio
+    arduino
     firefox
     #xfce.thunar
     #xfce.thunar-volman
@@ -86,7 +86,6 @@ in
     vscode
     #foot
 
-    #virt-manager
 
     #clang
     rustc
