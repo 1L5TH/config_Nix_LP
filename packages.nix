@@ -73,7 +73,7 @@ in
     niri
     neovim
     #zed-editor
-    arduino
+    arduino-ide
     firefox
     #xfce.thunar
     #xfce.thunar-volman
@@ -94,7 +94,7 @@ in
     wl-clipboard
 
     #gvfs
-    xorg.xeyes
+    xeyes
     qalculate-gtk
     libreoffice
     localsend

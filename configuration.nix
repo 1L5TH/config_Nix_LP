@@ -78,13 +78,13 @@
       "networkmanager"
       "wheel"
       "docker"
+      "dialout"
     ];
     #packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  programs.arduino.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"
