@@ -186,6 +186,12 @@
     };
   };
   programs.dconf.enable = true;
+
+  programs.nvf = {
+    enable = true;
+    settings = import ./nvf-config.nix;
+  };
+
   services.gvfs.enable = true;
   services.flatpak.enable = true;
   security.rtkit.enable = true;

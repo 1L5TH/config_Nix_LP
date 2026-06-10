@@ -104,7 +104,7 @@ in
   xdg.configFile."zed/tasks.json".source = ./configs/zed/tasks.json;
   programs.zed-editor.extraPackages = with pkgs; [
     nil
-    nixfmt-rfc-style
+    nixfmt
     tinymist
     typstyle
     clang-tools

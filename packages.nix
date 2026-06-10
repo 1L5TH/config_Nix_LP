@@ -71,7 +71,7 @@ in
     lazygit
     tinymist
     niri
-    neovim
+    #neovim
     #zed-editor
     arduino-ide
     firefox
