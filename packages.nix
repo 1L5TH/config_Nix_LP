@@ -86,7 +86,6 @@ in
     vscode
     #foot
 
-
     #clang
     rustc
     rust-analyzer
@@ -161,6 +160,11 @@ in
     startn_script
     wallpaper_script
     tooglewallpaper_script
+
+    blade-formatter # Para formatear las vistas .blade.php de Laravel
+    phpactor # LSP inteligente para PHP / Laravel
+    typescript-language-server # LSP para JS/TS y React
+    prettierd
   ];
   systemd.user.services.firefox-profile-memory-cache = {
     description = "Firefox profile memory cache";
@@ -169,8 +173,8 @@ in
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = ''${firefox-sync}/bin/firefox-sync 0shu6evv.default'';
-      ExecStop = ''${firefox-sync}/bin/firefox-sync 0shu6evv.default'';
+      ExecStart = "${firefox-sync}/bin/firefox-sync 0shu6evv.default";
+      ExecStop = "${firefox-sync}/bin/firefox-sync 0shu6evv.default";
     };
   };
 }

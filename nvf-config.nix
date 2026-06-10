@@ -10,39 +10,43 @@
     clipboard.registers = "unnamedplus";
     theme = {
       enable = true;
+      name = "tokyonight";
+      style = "storm"; # Opciones: night, storm, day, moon
       transparent = true;
     };
-    extraPlugins = with pkgs.vimPlugins; {
-      gruvbox-plugin = {
-        package = gruvbox-nvim;
-        setup = ''
-            require("gruvbox").setup({
-            terminal_colors = true, -- add neovim terminal colors
-            undercurl = true,
-            underline = true,
-            bold = true,
-            italic = {
-              strings = true,
-              emphasis = true,
-              comments = true,
-              operators = false,
-              folds = true,
-            },
-            strikethrough = true,
-            invert_selection = false,
-            invert_signs = false,
-            invert_tabline = false,
-            inverse = true, -- invert background for search, diffs, statuslines and errors
-            contrast = "hard", -- can be "hard", "soft" or empty string
-            palette_overrides = {},
-            overrides = {},
-            dim_inactive = false,
-            transparent_mode = true,
-          })
-          vim.cmd("colorscheme gruvbox")
-        '';
+    /*
+      extraPlugins = with pkgs.vimPlugins; {
+        gruvbox-plugin = {
+          package = gruvbox-nvim;
+          setup = ''
+              require("gruvbox").setup({
+              terminal_colors = true, -- add neovim terminal colors
+              undercurl = true,
+              underline = true,
+              bold = true,
+              italic = {
+                strings = true,
+                emphasis = true,
+                comments = true,
+                operators = false,
+                folds = true,
+              },
+              strikethrough = true,
+              invert_selection = false,
+              invert_signs = false,
+              invert_tabline = false,
+              inverse = true, -- invert background for search, diffs, statuslines and errors
+              contrast = "hard", -- can be "hard", "soft" or empty string
+              palette_overrides = {},
+              overrides = {},
+              dim_inactive = false,
+              transparent_mode = true,
+            })
+            vim.cmd("colorscheme gruvbox")
+          '';
+        };
       };
-    };
+    */
     terminal.toggleterm = {
       enable = true;
       lazygit.enable = true;
@@ -56,7 +60,7 @@
     };
     options = {
       whichwrap = "h,l";
-      langmap = "fe,pr,gt,jy,lu,ui,yo,ñp,rs,sd,tf,dg,nj,ek,il,oñ,kn,FE,PR,GT,JY,LU,UI,YO,ÑP,RS,SD,TF,DG,NJ,EK,IL,OÑ,KN";
+      #langmap = "fe,pr,gt,jy,lu,ui,yo,ñp,rs,sd,tf,dg,nj,ek,il,oñ,kn,FE,PR,GT,JY,LU,UI,YO,ÑP,RS,SD,TF,DG,NJ,EK,IL,OÑ,KN";
     };
 
     keymaps = [
