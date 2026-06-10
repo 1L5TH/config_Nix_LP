@@ -114,6 +114,7 @@
       enableTreesitter = true;
       enableDAP = true;
 
+      # Los que ya tenías
       nix = {
         enable = true;
         format = {
@@ -127,7 +128,23 @@
       python.enable = true;
       typst.enable = true;
       r.enable = true;
+
+      # === NUEVO SOPORTE: WEB & FRONTEND ===
+      html.enable = true;
+      css.enable = true;
+      ts = {
+        enable = true; # Esto activa TypeScript, JavaScript y React (.jsx / .tsx)
+        extensions.ts-error-translator.enable = true; # Opcional: te traduce los errores crípticos de TS a cristiano
+      };
+
+      # === NUEVO SOPORTE: BACKEND (PHP, Laravel, Java) ===
+      php.enable = true; # Soporte para PHP (Treesitter + LSP)
+      java.enable = true; # Soporte para Java (LSP de Eclipse JDTLS y Debugger)
+
+      # === NUEVO SOPORTE: BASES DE DATOS (PostgreSQL / MariaDB) ===
+      sql.enable = true; # Activa resaltado y herramientas para SQL
     };
+
     diagnostics = {
       config = {
         virtual_lines = true;
@@ -140,7 +157,7 @@
       mappings = {
         toggle = "<C-n>";
       };
-      setupOpts.actions.open_file.quit_on_open = true;
+      setupOpts.actions.open_file.quit_on_open = false;
     };
     tabline.nvimBufferline = {
       enable = true;

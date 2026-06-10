@@ -40,6 +40,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
+              backupFileExtension = "backup";
               extraSpecialArgs = {
                 pkgs-stable = inputs.nixpkgs-stable.legacyPackages."x86_64-linux";
               };

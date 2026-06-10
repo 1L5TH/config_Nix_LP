@@ -107,6 +107,7 @@ in
     mpvpaper
     wofi
     gnome-themes-extra
+    gnome-menus
     _7zz
     mako
     libnotify
@@ -149,11 +150,6 @@ in
     #nautilus # Needed for gtk4 FileChooserNative
     yazi
     jaq
-
-    kdePackages.dolphin
-    kdePackages.qtsvg
-    kdePackages.kio-fuse # to mount remote filesystems via FUSE
-    kdePackages.kio-extras # extra protocols support (sftp, fish and more)
 
     firefox-sync
     quit_niri_script

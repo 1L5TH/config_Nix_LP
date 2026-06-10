@@ -19,7 +19,7 @@ in
   programs.bash.enable = true;
   programs.foot.enable = true;
   programs.mpv.enable = true;
-  programs.zed-editor.enable = true;
+  #programs.zed-editor.enable = true;
   gtk.enable = true;
   services.swayosd.enable = true;
 
@@ -91,26 +91,28 @@ in
     '';
   };
 
-  programs.zed-editor.extensions = [
-    "log"
-    "nix"
-    "basher"
-    "typst"
-  ];
-  programs.zed-editor.userKeymaps = builtins.fromJSON (builtins.readFile ./configs/zed/keymap.json);
-  programs.zed-editor.userSettings = builtins.fromJSON (
-    builtins.readFile ./configs/zed/settings.json
-  );
-  xdg.configFile."zed/tasks.json".source = ./configs/zed/tasks.json;
-  programs.zed-editor.extraPackages = with pkgs; [
-    nil
-    nixfmt
-    tinymist
-    typstyle
-    clang-tools
-    python313Packages.python-lsp-server
-    python313Packages.pylint
-  ];
+  /*
+    programs.zed-editor.extensions = [
+      "log"
+      "nix"
+      "basher"
+      "typst"
+    ];
+    programs.zed-editor.userKeymaps = builtins.fromJSON (builtins.readFile ./configs/zed/keymap.json);
+    programs.zed-editor.userSettings = builtins.fromJSON (
+      builtins.readFile ./configs/zed/settings.json
+    );
+    xdg.configFile."zed/tasks.json".source = ./configs/zed/tasks.json;
+    programs.zed-editor.extraPackages = with pkgs; [
+      nil
+      nixfmt
+      tinymist
+      typstyle
+      clang-tools
+      python313Packages.python-lsp-server
+      python313Packages.pylint
+    ];
+  */
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
@@ -168,6 +170,91 @@ in
   #   selection-color = "#7fc8ff";
   #   drun-launch=false;
   # };
+  # Creamos un lanzador gráfico personalizado que une Foot y Neovim
+  xdg.desktopEntries = {
+    "foot-nvim" = {
+      name = "Neovim (Foot)";
+      genericName = "Text Editor";
+      exec = "foot -e nvim %F"; # Aquí le ordenamos a foot abrir nvim explícitamente
+      icon = "nvim";
+      terminal = false; # Falso, porque ya estamos invocando a foot directamente en el comando
+      categories = [
+        "Utility"
+        "TextEditor"
+        "Development"
+      ];
+      mimeType = [
+        "text/plain"
+        "text/x-python"
+        "text/x-src"
+      ];
+    };
+  };
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      # Explorador de archivos predeterminado
+      "inode/directory" = [ "thunar.desktop" ];
+      "application/x-gnome-saved-search" = [ "thunar.desktop" ];
+
+      "text/plain" = [ "foot-nvim.desktop" ];
+      "text/x-python" = [ "foot-nvim.desktop" ];
+      "text/x-src" = [ "foot-nvim.desktop" ];
+      "text/x-chdr" = [ "foot-nvim.desktop" ];
+      "text/x-csrc" = [ "foot-nvim.desktop" ];
+      "text/x-rust" = [ "foot-nvim.desktop" ];
+      "application/json" = [ "foot-nvim.desktop" ];
+      "application/javascript" = [ "foot-nvim.desktop" ];
+      "application/xml" = [ "foot-nvim.desktop" ];
+
+      # IMÁGENES -> Abren con Nomacs
+      "image/png" = [ "org.nomacs.ImageLounge.desktop" ];
+      "image/jpeg" = [ "org.nomacs.ImageLounge.desktop" ];
+      "image/gif" = [ "org.nomacs.ImageLounge.desktop" ];
+      "image/svg+xml" = [ "org.nomacs.ImageLounge.desktop" ];
+      "image/webp" = [ "org.nomacs.ImageLounge.desktop" ];
+      "image/bmp" = [ "org.nomacs.ImageLounge.desktop" ];
+
+      # VIDEO Y AUDIO -> Abren con MPV
+      "video/mp4" = [ "mpv.desktop" ];
+      "video/x-matroska" = [ "mpv.desktop" ]; # Archivos .mkv
+      "video/webm" = [ "mpv.desktop" ];
+      "video/quicktime" = [ "mpv.desktop" ]; # Archivos .mov
+      "audio/mpeg" = [ "mpv.desktop" ]; # Archivos .mp3
+      "audio/ogg" = [ "mpv.desktop" ];
+      "audio/wav" = [ "mpv.desktop" ];
+      "audio/flac" = [ "mpv.desktop" ];
+
+      # DOCUMENTOS DE OFICINA -> Abren con LibreOffice
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = [
+        "libreoffice-writer.desktop"
+      ]; # .docx
+      "application/msword" = [ "libreoffice-writer.desktop" ]; # .doc
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = [
+        "libreoffice-calc.desktop"
+      ]; # .xlsx
+      "application/vnd.ms-excel" = [ "libreoffice-calc.desktop" ]; # .xls
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation" = [
+        "libreoffice-impress.desktop"
+      ]; # .pptx
+      "application/vnd.ms-powerpoint" = [ "libreoffice-impress.desktop" ]; # .ppt
+    };
+  };
+
+  # Configuración declarativa de las carpetas del sistema y sus iconos nativos
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true; # Crea las carpetas automáticamente si no existen
+    desktop = "$HOME/Desktop";
+    documents = "$HOME/Documents";
+    download = "$HOME/Downloads";
+    music = "$HOME/Music";
+    pictures = "$HOME/Pictures";
+    videos = "$HOME/Videos";
+    publicShare = "$HOME/Public";
+    templates = "$HOME/Templates";
+  };
 
   xdg.configFile."Thunar/uca.xml".source = ./configs/thunar.uca.xml;
 
