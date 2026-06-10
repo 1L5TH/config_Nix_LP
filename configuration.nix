@@ -15,20 +15,54 @@
   ];
 
   # Bootloader.
-  boot.loader.timeout = 0;
-  boot.loader.systemd-boot.editor = true;
-  boot.loader.systemd-boot.configurationLimit = 0;
-  boot.loader.systemd-boot.enable = true;
+  #boot.loader.timeout = 0;
+  #boot.loader.systemd-boot.editor = true;
+  #boot.loader.systemd-boot.configurationLimit = 0;
+  #boot.loader.systemd-boot.enable = true;
 
-  #boot.loader.systemd-boot.enable = false;
+  boot.loader.systemd-boot.enable = false;
 
+  # Esta opción va FUERA de GRUB, a nivel de boot.loader.efi
   boot.loader.efi.canTouchEfiVariables = true;
 
-  #boot.loader.grub.enable = true;
-  #boot.loader.grub.efiSupport = true;
-  #boot.loader.grub.devices = [ "nodev" ]; # Importante para EFI
-  #boot.loader.grub.useOSProber = true; # Para que detecte Windows
-  #boot.loader.timeout = null;
+  # Configuración limpia de GRUB a nivel UEFI
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev";
+    efiSupport = true;
+    useOSProber = false;
+
+    extraEntries = ''
+      menuentry "Windows 11" --class windows --class os {
+          insmod part_gpt
+          insmod fat
+          insmod chain
+
+          # Forzamos a GRUB a pararse en tu partición de NixOS (FAT32)
+          search --no-floppy --file --set=root /EFI/Microsoft/Boot/bootmgfw.efi
+
+          # Lanza el cargador universal que sí tiene el mapa de tu Windows de 1.9T
+          chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+      }
+    '';
+  };
+
+
+  # Tiempo de espera en el menú de GRUB (10 segundos)
+  boot.loader.timeout = 10;
+
+  #boot.loader.grub = {
+    #enable = true;
+    #efiSupport = true;
+    #devices = [ "nodev" ];
+    #useOSProber = true;    # Mantiene el escaneo de tu Windows
+
+    # ESTA ES LA CORRECCIÓN REAL:
+    #efiInstallAsRemovable = true;
+  #};
+
+  # Mantén el timeout visible
+  #boot.loader.timeout = 10;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
@@ -44,7 +78,7 @@
   hardware.bluetooth.enable = true; # enables support for bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
 
-  networking.hostName = "1L5-LP-NIX"; # Define your hostname.
+  networking.hostName = "1L5-Thunder-Nix"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

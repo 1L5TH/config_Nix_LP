@@ -51,7 +51,8 @@ in
       dpi-aware = false;
     };
 
-    colors = {
+    # Cambiado de 'colors' a 'colors-dark' para eliminar el warning
+    colors-dark = {
       alpha = 0.7;
       background = "000000";
       foreground = "FFFFFF";

@@ -75,8 +75,8 @@ in
     #zed-editor
     arduino-ide
     firefox
-    #xfce.thunar
-    #xfce.thunar-volman
+    thunar
+    thunar-volman
     pipewire
     pavucontrol
     swaybg
