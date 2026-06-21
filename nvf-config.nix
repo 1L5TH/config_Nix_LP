@@ -132,9 +132,16 @@
       # === NUEVO SOPORTE: WEB & FRONTEND ===
       html.enable = true;
       css.enable = true;
-      ts = {
-        enable = true; # Esto activa TypeScript, JavaScript y React (.jsx / .tsx)
-        extensions.ts-error-translator.enable = true; # Opcional: te traduce los errores crípticos de TS a cristiano
+      typescript = {
+        enable = true;
+        extensions.ts-error-translator = {
+          enable = true;
+          # Forzamos a que use la nueva opción y desactivamos explícitamente la depreciada
+          setupOpts = {
+            auto_attach = true;
+            auto_override_publish_diagnostics = false;
+          };
+        };
       };
 
       # === NUEVO SOPORTE: BACKEND (PHP, Laravel, Java) ===
