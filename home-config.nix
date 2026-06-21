@@ -246,14 +246,11 @@ in
   xdg.userDirs = {
     enable = true;
     createDirectories = true; # Crea las carpetas automáticamente si no existen
-    desktop = "$HOME/Desktop";
     documents = "$HOME/Documents";
     download = "$HOME/Downloads";
     music = "$HOME/Music";
     pictures = "$HOME/Pictures";
     videos = "$HOME/Videos";
-    publicShare = "$HOME/Public";
-    templates = "$HOME/Templates";
   };
 
   xdg.configFile."Thunar/uca.xml".source = ./configs/thunar.uca.xml;
