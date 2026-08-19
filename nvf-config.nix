@@ -14,6 +14,41 @@
       style = "storm"; # Opciones: night, storm, day, moon
       transparent = true;
     };
+
+    luaConfigRC.pre = ''
+      -- 1. Detectar archivos .blade.php y asignarles el tipo de archivo "blade"
+      vim.filetype.add({
+        pattern = {
+          ['.*%.blade%.php'] = 'blade',
+        },
+      })
+
+      -- 2. Vincular a Treesitter para el resaltado inicial
+      vim.treesitter.language.register("html", "blade")
+
+      -- 3. Formatear automáticamente al guardar usando el ejecutable del sistema
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        pattern = "*.blade.php",
+        callback = function()
+          -- Ejecuta blade-formatter de forma silenciosa sobre el archivo actual
+          local file = vim.api.nvim_buf_get_name(0)
+          vim.fn.system(string.format("${pkgs.blade-formatter}/bin/blade-formatter --write %s", vim.fn.shellescape(file)))
+          -- Recarga el archivo para ver los cambios reflejados sin perder el cursor
+          vim.cmd("checktime")
+        end,
+      })
+    '';
+
+    # Mantenemos Treesitter activo asegurando los parsers base
+    treesitter = {
+      enable = true;
+      grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+        html
+        php
+        blade # Agregamos el parser de blade si nvf lo soporta directamente en sus grammars
+      ];
+    };
+
     /*
       extraPlugins = with pkgs.vimPlugins; {
         gruvbox-plugin = {
@@ -114,7 +149,6 @@
       enableTreesitter = true;
       enableDAP = true;
 
-      # Los que ya tenías
       nix = {
         enable = true;
         format = {
@@ -129,14 +163,12 @@
       typst.enable = true;
       r.enable = true;
 
-      # === NUEVO SOPORTE: WEB & FRONTEND ===
       html.enable = true;
       css.enable = true;
       typescript = {
         enable = true;
         extensions.ts-error-translator = {
           enable = true;
-          # Forzamos a que use la nueva opción y desactivamos explícitamente la depreciada
           setupOpts = {
             auto_attach = true;
             auto_override_publish_diagnostics = false;
@@ -144,12 +176,16 @@
         };
       };
 
-      # === NUEVO SOPORTE: BACKEND (PHP, Laravel, Java) ===
-      php.enable = true; # Soporte para PHP (Treesitter + LSP)
-      java.enable = true; # Soporte para Java (LSP de Eclipse JDTLS y Debugger)
-
-      # === NUEVO SOPORTE: BASES DE DATOS (PostgreSQL / MariaDB) ===
-      sql.enable = true; # Activa resaltado y herramientas para SQL
+      php = {
+        enable = true;
+        lsp = {
+          enable = true;
+          # Se pasa como una lista de strings
+          servers = [ "intelephense" ];
+        };
+      };
+      java.enable = true;
+      sql.enable = true;
     };
 
     diagnostics = {

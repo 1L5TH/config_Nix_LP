@@ -36,6 +36,11 @@ in
       variant = "mocha";
     })
   ];
+
+  home.sessionVariables = {
+    GTK_THEME = "Adwaita-dark";
+  };
+
   qt.enable = true;
   qt.platformTheme.name = "qtct";
   qt.style.name = "kvantum";
@@ -140,10 +145,8 @@ in
     gtk-application-prefer-dark-theme = 1;
     gtk-cursor-theme-name = "macOS";
   };
-  home.sessionVariables = {
-    GTK_THEME = "Adwaita-dark";
-  };
   home.pointerCursor = {
+    enable = true;
     gtk.enable = true;
     name = "macOS";
     package = pkgs.apple-cursor;

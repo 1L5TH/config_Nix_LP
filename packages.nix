@@ -158,7 +158,7 @@ in
     tooglewallpaper_script
 
     blade-formatter # Para formatear las vistas .blade.php de Laravel
-    phpactor # LSP inteligente para PHP / Laravel
+    intelephense # LSP inteligente para PHP / Laravel
     typescript-language-server # LSP para JS/TS y React
     prettierd
   ];

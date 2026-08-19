@@ -14,57 +14,85 @@
     #./home-config.nix
   ];
 
+  environment.systemPackages = [ pkgs.sbctl ];
   # Bootloader.
   #boot.loader.timeout = 0;
   #boot.loader.systemd-boot.editor = true;
   #boot.loader.systemd-boot.configurationLimit = 0;
   #boot.loader.systemd-boot.enable = true;
 
-  boot.loader.systemd-boot.enable = false;
+  ###########################################
+  # boot.loader.systemd-boot.enable = false;
 
   # Esta opción va FUERA de GRUB, a nivel de boot.loader.efi
-  boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
 
   # Configuración limpia de GRUB a nivel UEFI
-  boot.loader.grub = {
-    enable = true;
-    device = "nodev";
-    efiSupport = true;
-    useOSProber = false;
+  #boot.loader.grub = {
+  #  enable = true;
+  #device = "nodev";
+  #efiSupport = true;
+  #useOSProber = false;
 
-    extraEntries = ''
-      menuentry "Windows 11" --class windows --class os {
-          insmod part_gpt
-          insmod fat
-          insmod chain
+  #extraEntries = ''
+  # menuentry "Windows 11" --class windows --class os {
+  #insmod part_gpt
+  #insmod fat
+  #  insmod chain
 
-          # Forzamos a GRUB a pararse en tu partición de NixOS (FAT32)
-          search --no-floppy --file --set=root /EFI/Microsoft/Boot/bootmgfw.efi
+  # Forzamos a GRUB a pararse en tu partición de NixOS (FAT32)
+  # search --no-floppy --file --set=root /EFI/Microsoft/Boot/bootmgfw.efi
 
-          # Lanza el cargador universal que sí tiene el mapa de tu Windows de 1.9T
-          chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-      }
-    '';
-  };
-
+  # Lanza el cargador universal que sí tiene el mapa de tu Windows de 1.9T
+  # chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+  # }
+  #  '';
+  # };
 
   # Tiempo de espera en el menú de GRUB (10 segundos)
-  boot.loader.timeout = 10;
+  #boot.loader.timeout = 10;
+
+  ####################################
+  # =========================================================================
+  # CONFIGURACIÓN DE ARRANQUE CON LANZABOOTE (SECURE BOOT)
+  # =========================================================================
+
+  # Forzamos la desactivación de systemd-boot y GRUB
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.grub.enable = false;
+
+  # Activamos Lanzaboote
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/var/lib/sbctl";
+  };
+
+  # Permitimos que NixOS toque las variables EFI
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 30;
+
+  # Tiempo de espera en el menú de selección (Lanzaboote respeta esta opción)
+  #boot.loader.timeout = 10;
+
+  # Herramienta para gestionar las llaves en el sistema
+
+  # =========================================================================
 
   #boot.loader.grub = {
-    #enable = true;
-    #efiSupport = true;
-    #devices = [ "nodev" ];
-    #useOSProber = true;    # Mantiene el escaneo de tu Windows
+  #enable = true;
+  #efiSupport = true;
+  #devices = [ "nodev" ];
+  #useOSProber = true;    # Mantiene el escaneo de tu Windows
 
-    # ESTA ES LA CORRECCIÓN REAL:
-    #efiInstallAsRemovable = true;
+  # ESTA ES LA CORRECCIÓN REAL:
+  #efiInstallAsRemovable = true;
   #};
 
   # Mantén el timeout visible
   #boot.loader.timeout = 10;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages;
   boot.kernelParams = [
     "nowatchdog"
     "preempt=full"
@@ -113,6 +141,8 @@
       "wheel"
       "docker"
       "dialout"
+      "adbusers" 
+      "kvm"
     ];
     #packages = with pkgs; [ ];
   };
