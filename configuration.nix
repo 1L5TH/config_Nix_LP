@@ -1,278 +1,318 @@
 {
-  config,
-  pkgs,
-  lib,
-  ...
+        config,
+        pkgs,
+        lib,
+        ...
 }:
 
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    ./packages.nix
-    ./graphics.nix
-    #./home-config.nix
-  ];
+        imports = [
+                # Include the results of the hardware scan.
+                ./hardware-configuration.nix
+                ./packages.nix
+                ./graphics.nix
+                #./home-config.nix
+        ];
 
-  environment.systemPackages = [ pkgs.sbctl ];
-  # Bootloader.
-  #boot.loader.timeout = 0;
-  #boot.loader.systemd-boot.editor = true;
-  #boot.loader.systemd-boot.configurationLimit = 0;
-  #boot.loader.systemd-boot.enable = true;
+        environment.systemPackages = [
+                pkgs.sbctl
+                pkgs.arduino-ide
 
-  ###########################################
-  # boot.loader.systemd-boot.enable = false;
+                # Entorno FHS corregido para las herramientas del ESP32
+                (pkgs.buildFHSEnv {
+                        name = "arduino-fhs";
+                        targetPkgs =
+                                pkgs: with pkgs; [
+                                        zlib
+                                        glibc
+                                        python3
+                                        libusb1
+                                        stdenv.cc.cc.lib # Esto provee libstdc++.so.6 de forma correcta
+                                ];
+                        runScript = "arduino-ide";
+                })
+        ];
 
-  # Esta opción va FUERA de GRUB, a nivel de boot.loader.efi
-  # boot.loader.efi.canTouchEfiVariables = true;
+        # Bootloader.
+        #boot.loader.timeout = 0;
+        #boot.loader.systemd-boot.editor = true;
+        #boot.loader.systemd-boot.configurationLimit = 0;
+        #boot.loader.systemd-boot.enable = true;
 
-  # Configuración limpia de GRUB a nivel UEFI
-  #boot.loader.grub = {
-  #  enable = true;
-  #device = "nodev";
-  #efiSupport = true;
-  #useOSProber = false;
+        ###########################################
+        # boot.loader.systemd-boot.enable = false;
 
-  #extraEntries = ''
-  # menuentry "Windows 11" --class windows --class os {
-  #insmod part_gpt
-  #insmod fat
-  #  insmod chain
+        # Esta opción va FUERA de GRUB, a nivel de boot.loader.efi
+        # boot.loader.efi.canTouchEfiVariables = true;
 
-  # Forzamos a GRUB a pararse en tu partición de NixOS (FAT32)
-  # search --no-floppy --file --set=root /EFI/Microsoft/Boot/bootmgfw.efi
+        # Configuración limpia de GRUB a nivel UEFI
+        #boot.loader.grub = {
+        #  enable = true;
+        #device = "nodev";
+        #efiSupport = true;
+        #useOSProber = false;
 
-  # Lanza el cargador universal que sí tiene el mapa de tu Windows de 1.9T
-  # chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-  # }
-  #  '';
-  # };
+        #extraEntries = ''
+        # menuentry "Windows 11" --class windows --class os {
+        #insmod part_gpt
+        #insmod fat
+        #  insmod chain
 
-  # Tiempo de espera en el menú de GRUB (10 segundos)
-  #boot.loader.timeout = 10;
+        # Forzamos a GRUB a pararse en tu partición de NixOS (FAT32)
+        # search --no-floppy --file --set=root /EFI/Microsoft/Boot/bootmgfw.efi
 
-  ####################################
-  # =========================================================================
-  # CONFIGURACIÓN DE ARRANQUE CON LANZABOOTE (SECURE BOOT)
-  # =========================================================================
+        # Lanza el cargador universal que sí tiene el mapa de tu Windows de 1.9T
+        # chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+        # }
+        #  '';
+        # };
 
-  # Forzamos la desactivación de systemd-boot y GRUB
-  boot.loader.systemd-boot.enable = lib.mkForce false;
-  boot.loader.grub.enable = false;
+        # Tiempo de espera en el menú de GRUB (10 segundos)
+        #boot.loader.timeout = 10;
 
-  # Activamos Lanzaboote
-  boot.lanzaboote = {
-    enable = true;
-    pkiBundle = "/var/lib/sbctl";
-  };
+        ####################################
+        # =========================================================================
+        # CONFIGURACIÓN DE ARRANQUE CON LANZABOOTE (SECURE BOOT)
+        # =========================================================================
 
-  # Permitimos que NixOS toque las variables EFI
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.timeout = 30;
+        # Forzamos la desactivación de systemd-boot y GRUB
+        boot.loader.systemd-boot.enable = lib.mkForce false;
+        boot.loader.grub.enable = false;
 
-  # Tiempo de espera en el menú de selección (Lanzaboote respeta esta opción)
-  #boot.loader.timeout = 10;
+        # Activamos Lanzaboote
+        boot.lanzaboote = {
+                enable = true;
+                pkiBundle = "/var/lib/sbctl";
+        };
 
-  # Herramienta para gestionar las llaves en el sistema
+        # Permitimos que NixOS toque las variables EFI
+        boot.loader.efi.canTouchEfiVariables = true;
+        boot.loader.timeout = 30;
 
-  # =========================================================================
+        # Tiempo de espera en el menú de selección (Lanzaboote respeta esta opción)
+        #boot.loader.timeout = 10;
 
-  #boot.loader.grub = {
-  #enable = true;
-  #efiSupport = true;
-  #devices = [ "nodev" ];
-  #useOSProber = true;    # Mantiene el escaneo de tu Windows
+        # Herramienta para gestionar las llaves en el sistema
 
-  # ESTA ES LA CORRECCIÓN REAL:
-  #efiInstallAsRemovable = true;
-  #};
+        # =========================================================================
 
-  # Mantén el timeout visible
-  #boot.loader.timeout = 10;
+        #boot.loader.grub = {
+        #enable = true;
+        #efiSupport = true;
+        #devices = [ "nodev" ];
+        #useOSProber = true;    # Mantiene el escaneo de tu Windows
 
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPackages = pkgs.linuxPackages;
-  boot.kernelParams = [
-    "nowatchdog"
-    "preempt=full"
-  ];
-  boot.kernelModules = [ "ntsync" ];
+        # ESTA ES LA CORRECCIÓN REAL:
+        #efiInstallAsRemovable = true;
+        #};
 
-  hardware.graphics = {
-    enable = true;
-  };
+        # Mantén el timeout visible
+        #boot.loader.timeout = 10;
 
-  hardware.bluetooth.enable = true; # enables support for bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+        # boot.kernelPackages = pkgs.linuxPackages_latest;
+        boot.kernelPackages = pkgs.linuxPackages;
+        boot.kernelParams = [
+                "nowatchdog"
+                "preempt=full"
+        ];
+        boot.kernelModules = [ "ntsync" ];
 
-  networking.hostName = "1L5-Thunder-Nix"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+        hardware.graphics = {
+                enable = true;
+        };
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+        hardware.bluetooth.enable = true; # enables support for bluetooth
+        hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+        networking.hostName = "1L5-Thunder-Nix"; # Define your hostname.
+        # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Set your time zone.
-  time.timeZone = "America/Mexico_City";
+        # Configure network proxy if necessary
+        # networking.proxy.default = "http://user:password@proxy:port/";
+        # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
+        # Enable networking
+        networking.networkmanager.enable = true;
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
+        # Set your time zone.
+        time.timeZone = "America/Mexico_City";
 
-  virtualisation.docker.enable = true;
+        # Select internationalisation properties.
+        i18n.defaultLocale = "en_US.UTF-8";
 
-  #virtualisation.spiceUSBRedirection.enable = true;
+        # Configure keymap in X11
+        services.xserver.xkb = {
+                layout = "us";
+                variant = "";
+        };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.ale = {
-    isNormalUser = true;
-    description = "ale";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "docker"
-      "dialout"
-      "adbusers" 
-      "kvm"
-    ];
-    #packages = with pkgs; [ ];
-  };
+        virtualisation.docker.enable = true;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+        #virtualisation.spiceUSBRedirection.enable = true;
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+        # Define a user account. Don't forget to set a password with ‘passwd’.
+        users.users.ale = {
+                isNormalUser = true;
+                description = "ale";
+                extraGroups = [
+                        "networkmanager"
+                        "wheel"
+                        "docker"
+                        "dialout"
+                        "adbusers"
+                        "kvm"
+                ];
+                #packages = with pkgs; [ ];
+        };
 
-  fonts.packages = with pkgs; [
-    fira-code
-    fira-code-symbols
-    noto-fonts
-    liberation_ttf
-    dejavu_fonts
-    font-awesome
-    nerd-fonts.jetbrains-mono
-  ];
+        # Allow unfree packages
+        nixpkgs.config.allowUnfree = true;
 
-  environment.etc."polkit-1/rules.d/10-nixos.rules".text = ''
-    polkit.addRule(function(action, subject) {
-      if (action.id == "org.freedesktop.policykit.exec" &&
-          subject.isInGroup("wheel")) {
-          return polkit.Result.YES;
-      }
-    });
-  '';
+        nix.settings.experimental-features = [
+                "nix-command"
+                "flakes"
+        ];
 
-  security.pam.services.swaylock = { };
-  services.printing.enable = true;
-  #services.printing.drivers = [ pkgs.epson-escpr2 ];
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    #openFirewall = true;
-  };
+        fonts.packages = with pkgs; [
+                fira-code
+                fira-code-symbols
+                noto-fonts
+                liberation_ttf
+                dejavu_fonts
+                font-awesome
+                nerd-fonts.jetbrains-mono
+        ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+        services.udev.extraRules = ''
+                SUBSYSTEMS=="usb", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE="0666"
+        '';
 
-  # List services that you want to enable:
+        environment.etc."polkit-1/rules.d/10-nixos.rules".text = ''
+                polkit.addRule(function(action, subject) {
+                  if (action.id == "org.freedesktop.policykit.exec" &&
+                      subject.isInGroup("wheel")) {
+                      return polkit.Result.YES;
+                  }
+                });
+        '';
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      kdePackages.xdg-desktop-portal-kde
-      xdg-desktop-portal-gnome
-    ];
-  };
-  # Most of this is copied from niri's config, except the KDE FileChooser
-  xdg.portal.config = {
-    niri = {
-      default = [
-        "gnome"
-        "gtk"
-      ];
-      "org.freedesktop.impl.portal.Access" = [ "gtk" ];
-      "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
-      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-      "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
-    };
-  };
-  programs.dconf.enable = true;
+        security.pam.services.swaylock = { };
+        services.printing.enable = true;
+        #services.printing.drivers = [ pkgs.epson-escpr2 ];
+        services.avahi = {
+                enable = true;
+                nssmdns4 = true;
+                #openFirewall = true;
+        };
 
-  programs.nvf = {
-    enable = true;
-    settings = import ./nvf-config.nix;
-  };
+        # Some programs need SUID wrappers, can be configured further or are
+        # started in user sessions.
+        # programs.mtr.enable = true;
+        # programs.gnupg.agent = {
+        #   enable = true;
+        #   enableSSHSupport = true;
+        # };
 
-  services.gvfs.enable = true;
-  services.flatpak.enable = true;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-  };
+        # List services that you want to enable:
 
-  services.pipewire.wireplumber.extraConfig."10-bluez" = {
-    "monitor.bluez.properties" = {
-      "bluez5.enable-sbc-xq" = true;
-      "bluez5.enable-msbc" = true;
-      "bluez5.enable-hw-volume" = true;
-      "bluez5.headset-roles" = [
-        "hsp_hs"
-        "hsp_ag"
-        "hfp_hf"
-        "hfp_ag"
-      ];
-    };
-  };
+        # Enable the OpenSSH daemon.
+        # services.openssh.enable = true;
+        xdg.portal = {
+                enable = true;
+                extraPortals = with pkgs; [
+                        kdePackages.xdg-desktop-portal-kde
+                        xdg-desktop-portal-gnome
+                ];
+        };
+        # Most of this is copied from niri's config, except the KDE FileChooser
+        xdg.portal.config = {
+                niri = {
+                        default = [
+                                "gnome"
+                                "gtk"
+                        ];
+                        "org.freedesktop.impl.portal.Access" = [ "gtk" ];
+                        "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
+                        "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+                        "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+                };
+        };
+        programs.dconf.enable = true;
 
-  # Open ports in the firewall.
-  #networking.firewall.allowedTCPPorts = [
-  #  58396
-  #  631
-  #  53317
-  #];
-  #networking.firewall.allowedUDPPorts = [
-  #  631
-  #  53317
-  #];
+        programs.nvf = {
+                enable = true;
+                settings = import ./nvf-config.nix;
+        };
 
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+        services.gvfs.enable = true;
+        services.flatpak.enable = true;
+        security.rtkit.enable = true;
+        services.pipewire = {
+                enable = true;
+                alsa.enable = true;
+                alsa.support32Bit = true;
+                pulse.enable = true;
+                # If you want to use JACK applications, uncomment this
+                #jack.enable = true;
+        };
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+        services.pipewire.wireplumber.extraConfig."10-bluez" = {
+                "monitor.bluez.properties" = {
+                        "bluez5.enable-sbc-xq" = true;
+                        "bluez5.enable-msbc" = true;
+                        "bluez5.enable-hw-volume" = true;
+                        "bluez5.headset-roles" = [
+                                "hsp_hs"
+                                "hsp_ag"
+                                "hfp_hf"
+                                "hfp_ag"
+                        ];
+                };
+        };
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
+        nixpkgs.overlays = [
+                (final: prev: {
+                        pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+                                (python-final: python-prev: {
+                                        diff-cover = python-prev.diff-cover.overridePythonAttrs (old: {
+                                                doCheck = false;
+                                        });
+                                })
+                        ];
+                })
+                (final: prev: {
+                        graalvm-oracle = prev.graalvm-oracle.overrideAttrs (old: {
+                                __noSandbox = true;
+                                doInstallCheck = false;
+                                installCheckPhase = "";
+                        });
+                })
+        ];
+        # Open ports in the firewall.
+        #networking.firewall.allowedTCPPorts = [
+        #  58396
+        #  631
+        #  53317
+        #];
+        #networking.firewall.allowedUDPPorts = [
+        #  631
+        #  53317
+        #];
+
+        # Or disable the firewall altogether.
+        # networking.firewall.enable = false;
+
+        # Open ports in the firewall.
+        # networking.firewall.allowedTCPPorts = [ ... ];
+        # networking.firewall.allowedUDPPorts = [ ... ];
+        # Or disable the firewall altogether.
+        # networking.firewall.enable = false;
+
+        # This value determines the NixOS release from which the default
+        # settings for stateful data, like file locations and database versions
+        # on your system were taken. It‘s perfectly fine and recommended to leave
+        # this value at the release version of the first install of this system.
+        # Before changing this value read the documentation for this option
+        # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+        system.stateVersion = "25.11"; # Did you read the comment?
 }

@@ -161,6 +161,8 @@ in
     intelephense # LSP inteligente para PHP / Laravel
     typescript-language-server # LSP para JS/TS y React
     prettierd
+
+    kicad
   ];
   systemd.user.services.firefox-profile-memory-cache = {
     description = "Firefox profile memory cache";

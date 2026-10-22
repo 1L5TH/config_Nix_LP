@@ -39,21 +39,30 @@ in
         home.stateVersion = "26.05";
         # Here goes the rest of your home-manager config, e.g. home.packages = [ pkgs.foo ];
 
-        # Programs
-        programs.eww.enable = true;
-        programs.bash.enable = true;
-        programs.foot.enable = true;
-        programs.mpv.enable = true;
+
         #programs.zed-editor.enable = true;
         gtk.enable = true;
         services.swayosd.enable = true;
 
         # Configs
-        programs.git.settings = {
-                enable = true;
-                userName = "1L5TH";
-                userEmail = "aleth2k@gmail.com";
+        programs = {
+eww.enable = true;
+        bash.enable = true;
+        foot.enable = true;
+        mpv.enable = true;
+
+    git = {
+      enable = true;
+      signing.format = "openpgp";
+      settings = {
+        user = {
+          name = "mike7d7";
+          email = "mike7d7@proton.me";
         };
+      };
+    };
+  };
+
 
         home.packages = with pkgs; [
                 (catppuccin-kvantum.override {
