@@ -281,14 +281,10 @@
                         ];
                 })
                 (final: prev: {
-                        graalvm-oracle = prev.graalvm-oracle.overrideAttrs (old: {
-                                __noSandbox = true;
-                                doInstallCheck = false;
-                                installCheckPhase = "";
-                        });
+                        # Reemplazamos el paquete defectuoso de Oracle por GraalVM Community Edition
+                        graalvm-oracle = prev.graalvm-ce;
                 })
-        ];
-        # Open ports in the firewall.
+        ]; # Open ports in the firewall.
         #networking.firewall.allowedTCPPorts = [
         #  58396
         #  631
